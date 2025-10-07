@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vivek Mahey - Full-Stack Developer & AI Enthusiast</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+
+    <style>
+        :root {
+            --color-primary: #9A34FF;
+            /* Vibrant Purple */
+            --color-secondary: #F43F5E;
+            /* Magenta/Pink Accent */
+            --color-background: #F5F7FA;
+            /* Light Gray-White */
+            --color-surface: #FFFFFF;
+            /* White Cards */
+            --color-light-slate: #6B7280;
+            /* Darker Gray for Text */
+            --color-slate: #4B5563;
+            /* Slightly Darker Gray */
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        [data-theme="dark"] {
+            --color-background: #0A0A14;
+            /* Dark mode background */
+            --color-surface: #1F2937;
+            /* Dark mode cards */
+            --color-light-slate: #D1D5DB;
+            /* Lighter text for dark mode */
+            --color-slate: #9CA3AF;
+            /* Slightly lighter gray for dark mode */
+        }
+
+        body {
+            background-color: var(--color-background);
+            color: var(--color-slate);
+            font-family: 'Montserrat', sans-serif;
+            cursor: none;
+            /* Hide default cursor */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        h1, h2, h3, h4, h5 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+}
+
+
+        /* Custom Cursor */
+        .cursor-dot,
+        .cursor-outline {
+            pointer-events: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, transform 0.2s ease-in-out;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--color-primary);
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(154, 52, 255, 0.2);
+            transition-duration: 0.3s;
+        }
+
+        body:hover .cursor-dot,
+        body:hover .cursor-outline {
+            opacity: 1;
+        }
+
+        .cursor-interact {
+            transform: translate(-50%, -50%) scale(1.5);
+            background-color: rgba(244, 63, 94, 0.3);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--color-background);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #D1D5DB;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-light-slate);
+        }
+
+        /* Full-width Header */
+        .header-full {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            width: 100vw;
+            left: 0;
+            right: 0;
+            margin: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        [data-theme="dark"] .header-full {
+            background: rgba(10, 10, 20, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-full.scrolled {
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] .header-full.scrolled {
+            box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Navigation Menu */
+        .nav-menu a {
+            color: var(--color-slate);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: var(--color-primary);
+        }
+
+        .nav-menu a.active {
+            color: var(--color-primary);
+            font-weight: 700;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 100%;
+            height: 3px;
+            background-color: var(--color-slate);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+        }
+
+        [data-theme="dark"] .mobile-nav {
+            background: rgba(10, 10, 20, 0.98);
+        }
+
+        .mobile-nav.active {
+            right: 0;
+        }
+
+        .mobile-nav a {
+            font-size: 1.5rem;
+            margin: 1rem 0;
+            color: var(--color-slate);
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease-in-out;
+            transition-delay: calc(0.1s * var(--index));
+        }
+
+        .mobile-nav.active a {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Navigation */
+        @media (max-width: 768px) {
+            .nav-menu .nav-link {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-menu .social-icons {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .side-nav {
+                display: none;
+            }
+        }
+
+        /* Card Styles */
+        .glass-card {
+            background: var(--color-surface);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        [data-theme="dark"] .glass-card {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(154, 52, 255, 0.15);
+        }
+
+        .project-card {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F3E8FF 100%);
+            border: 1px solid var(--color-primary);
+        }
+
+        [data-theme="dark"] .project-card {
+            background: linear-gradient(135deg, #d4d7db 0%, #dacef0 100%);
+        }
+
+        .freelance-card {
+            background: #F9FAFB;
+            border: 1px solid #E5E7EB;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        [data-theme="dark"] .freelance-card {
+            background: #1F2937;
+            border: 1px solid #4B5563;
+        }
+
+        .freelance-card:hover {
+            border-color: #D1D5DB;
+            transform: translateY(-4px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] .freelance-card:hover {
+            border-color: var(--color-primary);
+            box-shadow: 0 6px 12px rgba(255, 255, 255, 0.1);
+        }
+
+        .freelance-image {
+            width: 100%;
+            border-radius: 0.375rem;
+            margin-top: 1rem;
+        }
+
+        .btn-primary {
+            border: 1px solid var(--color-primary);
+            color: var(--color-primary);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary:hover {
+            background-color: rgba(154, 52, 255, 0.1);
+            box-shadow: 0 0 20px rgba(154, 52, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .section-title {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1F2937;
+        }
+
+        [data-theme="dark"] .section-title {
+            color: #FFFFFF;
+        }
+
+        .section-title::after {
+            content: "";
+            display: block;
+            position: relative;
+            top: 2px;
+            width: 200px;
+            height: 1px;
+            margin-left: 20px;
+            background: linear-gradient(to right, var(--color-primary), transparent);
+        }
+
+        /* Section Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            transition-delay: 0.2s;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Side Navigation */
+        .side-nav {
+            position: fixed;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        .side-nav a {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #D1D5DB;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        [data-theme="dark"] .side-nav a {
+            background-color: #4B5563;
+        }
+
+        .side-nav a.active {
+            background-color: var(--color-primary);
+            transform: scale(1.3);
+        }
+
+        .side-nav a:hover {
+            background-color: var(--color-primary);
+        }
+
+        /* Contact Form */
+        .form-input {
+            width: 100%;
+            background-color: #F9FAFB;
+            border: 1px solid #D1D5DB;
+            color: var(--color-slate);
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            transition: border-color 0.3s ease;
+        }
+
+        [data-theme="dark"] .form-input {
+            background-color: #1F2937;
+            border: 1px solid #4B5563;
+            color: #D1D5DB;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(180deg, #FFFFFF 0%, #F3E8FF 100%);
+            border-top: 1px solid rgba(154, 52, 255, 0.2);
+            padding: 2rem 0;
+        }
+
+        [data-theme="dark"] .footer {
+            background: linear-gradient(180deg, #1F2937 0%, #4B3C66 100%);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer a {
+            color: var(--color-primary);
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--color-secondary);
+        }
+
+        [data-theme="dark"] .footer p {
+            color: #FFFFFF;
+        }
+
+        [data-theme="dark"] .footer a {
+            color: #FFFFFF;
+        }
+
+        /* Hero Section */
+        #hero {
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            padding: 0 24px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        #spline-container {
+            width: 100%;
+            max-width: 600px;
+            height: 600px;
+            margin: auto;
+        }
+
+        [data-theme="dark"] #hero {
+            background-color: #0A0A14;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: relative;
+            width: 40px;
+            height: 24px;
+            background-color: var(--color-slate);
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .theme-toggle::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background-color: var(--color-background);
+            border-radius: 50%;
+            transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55), background-color 0.3s ease;
+        }
+
+        .theme-toggle.active::before {
+            transform: translateX(16px);
+        }
+
+        .theme-toggle .icon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            fill: var(--color-primary);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .theme-toggle .sun {
+            left: 4px;
+            opacity: 1;
+        }
+
+        .theme-toggle .moon {
+            right: 4px;
+            opacity: 0;
+        }
+
+        .theme-toggle.active .sun {
+            opacity: 0;
+            transform: translateX(-10px);
+        }
+
+        .theme-toggle.active .moon {
+            opacity: 1;
+            transform: translateX(-10px);
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--color-light-slate);
+        }
+
+        .theme-toggle:active {
+            transform: scale(0.95);
+        }
+
+        /* Updated styles for dark theme headings and divs */
+        [data-theme="dark"] h1,
+        [data-theme="dark"] h2,
+        [data-theme="dark"] h3 {
+            color: #FFFFFF;
+        }
+
+        [data-theme="dark"] #hero h1 {
+            color: #f0f1f3;
+        }
+
+        [data-theme="dark"] div {
+            opacity: 1;
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+
+<body class="overflow-x-hidden">
+    <!-- Custom Cursor -->
+    <div class="cursor-outline"></div>
+    <div class="cursor-dot"></div>
+
+    <!-- Side Navigation -->
+    <nav class="side-nav hidden lg:flex">
+        <a href="#hero" data-section="hero" class="nav-dot active"></a>
+        <a href="#about" data-section="about" class="nav-dot"></a>
+        <a href="#experience" data-section="experience" class="nav-dot"></a>
+        <a href="#projects" data-section="projects" class="nav-dot"></a>
+        <a href="#freelance" data-section="freelance" class="nav-dot"></a>
+        <a href="#contact" data-section="contact" class="nav-dot"></a>
+    </nav>
+
+    <!-- Header -->
+    <header class="header-full fixed top-0 z-50 flex justify-between items-center h-20 px-4 md:px-8">
+        <div class="text-2xl font-bold text-white-bold font-mono z-10 hover:text-primary transition-colors">VM</div>
+        <div class="flex items-center">
+            <nav class="nav-menu flex items-center space-x-6 text-lg z-10">
+                <a href="#hero" data-section="hero" class="nav-link active">Home</a>
+                <a href="#about" data-section="about" class="nav-link">About</a>
+                <a href="#experience" data-section="experience" class="nav-link">Experience</a>
+                <a href="#projects" data-section="projects" class="nav-link">Projects</a>
+                <a href="#freelance" data-section="freelance" class="nav-link">Freelance</a>
+                <a href="#contact" data-section="contact" class="nav-link">Contact</a>
+                <div class="social-icons flex items-center space-x-4">
+                    <a href="https://github.com/vivekmahey" target="_blank" rel="noopener noreferrer"
+                        class="text-gray-500 hover:text-primary transition-colors duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                            </path>
+                        </svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/vivek-mahey-236448255" target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-gray-500 hover:text-primary transition-colors duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z">
+                            </path>
+                            <rect x="2" y="9" width="4" height="12"></rect>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                    </a>
+                    <div class="theme-toggle" id="theme-toggle">
+                        <svg class="icon sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="icon moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </nav>
+            <div class="hamburger ml-6 md:ml-8" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <nav class="mobile-nav">
+            <a href="#hero" data-section="hero" class="nav-link" style="--index: 1;">Home</a>
+            <a href="#about" data-section="about" class="nav-link" style="--index: 2;">About</a>
+            <a href="#experience" data-section="experience" class="nav-link" style="--index: 3;">Experience</a>
+            <a href="#projects" data-section="projects" class="nav-link" style="--index: 4;">Projects</a>
+            <a href="#freelance" data-section="freelance" class="nav-link" style="--index: 5;">Freelance</a>
+            <a href="#contact" data-section="contact" class="nav-link" style="--index: 6;">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="min-h-screen flex  items-center relative">
+            <div class="container mx-auto px-6 md:px-12 lg:px-24 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div>
+                    <p class="text-lg text-primary font-mono mb-4 mt-10 reveal">Hello, my name is</p>
+                    <h1 class="text-5xl sm:text-7xl lg:text-8xl font-black text-white-900 leading-tight mb-3 reveal"
+                        style="transition-delay: 0.1s;">
+                        Vivek Mahey.
+                    </h1>
+                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-600 mb-6 reveal"
+                        style="transition-delay: 0.2s;">
+                        I build things for the web.
+                    </h2>
+                    <p class="max-w-xl text-gray-500 mb-8 reveal" style="transition-delay: 0.3s;">
+                        I'm a full-stack engineer specializing in building (and occasionally designing) exceptional
+                        digital experiences. Currently, I’m focused on building accessible, human-centered products and
+                        exploring AI integrations.
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 reveal"
+                        style="transition-delay: 0.4s;">
+                        <a href="./Files/Vivek Mahey Resume(Updated) (1).pdf" target="_blank"
+                            class="btn-primary font-mono text-lg py-3 px-8 rounded-md inline-block text-center">View My
+                            Resume</a>
+                    </div>
+                </div>
+                <div id="spline-container" class="reveal" style="transition-delay: 0.5s;">
+                    <iframe src='https://my.spline.design/nexbotrobotcharacterconcept-JTEXqzDnEGRDVRmZ6dOtRYtu/'
+                        frameborder='0' width='100%' height='100%'></iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-24 md:py-32 container mx-auto px-6 md:px-12 lg:px-24">
+            <h2 class="section-title reveal"><span class="font-mono text-primary mr-2">01.</span> About Me</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="text-lg text-gray-500 space-y-4 reveal">
+                    <p>Dedicated and goal-oriented Computer Science and Engineering student (B.Tech) with hands-on
+                        experience in developing responsive and user-friendly web applications.</p>
+                    <p>Proficient in front-end development using React, and skilled in back-end technologies like
+                        Node.js, Express.js, and MongoDB. I'm also comfortable with UI/UX design and various API
+                        integrations.</p>
+                    <p>Here are a few technologies I’ve been working with recently:</p>
+                    <ul class="grid grid-cols-2 gap-2 font-mono text-sm text-gray-600 mt-4">
+                        <li class="flex items-center space-x-2"><span class="text-secondary">▹</span><span>React &
+                                Next.js</span></li>
+                        <li class="flex items-center space-x-2"><span class="text-secondary">▹</span><span>Node.js &
+                                Express</span></li>
+                        <li class="flex items-center space-x-2"><span
+                                class="text-secondary">▹</span><span>TypeScript</span></li>
+                        <li class="flex items-center space-x-2"><span class="text-secondary">▹</span><span>MongoDB &
+                                SQL</span></li>
+                        <li class="flex items-center space-x-2"><span class="text-secondary">▹</span><span>Tailwind
+                                CSS</span></li>
+                        <li class="flex items-center space-x-2"><span class="text-secondary">▹</span><span>Gemini &
+                                OpenAI APIs</span></li>
+                    </ul>
+                </div>
+                <div class="relative w-full max-w-sm mx-auto reveal" style="transition-delay: 0.2s;">
+                    <div class="relative group">
+                        <div
+                            class="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-lg blur opacity-60 group-hover:opacity-100 transition duration-1000 group-hover:duration-200">
+                        </div>
+                        <img src="./images/Vivek1.jpeg" alt="Vivek Mahey" class="relative w-full rounded-lg">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-24 md:py-32 container mx-auto px-6 md:px-12 lg:px-24">
+            <h2 class="section-title reveal"><span class="font-mono text-primary mr-2">02.</span> Where I’ve Worked</h2>
+            <div class="relative max-w-3xl mx-auto reveal">
+                <div class="absolute left-3 top-0 h-full w-0.5 bg-gray-200"></div>
+                <div class="space-y-12">
+                    <div class="relative pl-12">
+                        <div class="absolute left-0 top-1.5 w-6 h-6 bg-white border-2 border-primary rounded-full">
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">Full Stack Developer Intern @ <span
+                                class="text-primary">Excellence Technology</span></h3>
+                        <p class="font-mono text-sm text-gray-500 mb-3">May 2024 - July 2024</p>
+                        <ul class="list-disc list-inside text-gray-500 space-y-2">
+                            <li>Developed and maintained responsive front-end features for client websites using
+                                React.js, ensuring high performance and cross-browser compatibility.</li>
+                            <li>Collaborated with a team of developers using Git/GitHub for version control in an Agile
+                                environment.</li>
+                        </ul>
+                    </div>
+                    <div class="relative pl-12">
+                        <div class="absolute left-0 top-1.5 w-6 h-6 bg-white border-2 border-primary rounded-full">
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">Software Developer Intern @ <span
+                                class="text-primary">A2IT Soft Pvt Limited</span></h3>
+                        <p class="font-mono text-sm text-gray-500 mb-3">June 2025 - August 2025</p>
+                        <ul class="list-disc list-inside text-gray-500 space-y-2">
+                            <li>Engineered and deployed RESTful APIs using Node.js and Express.js for a new job portal
+                                application, connecting to a MongoDB database.</li>
+                            <li>Implemented secure user authentication and authorization functionalities from scratch.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-24 md:py-32 container mx-auto px-6 md:px-12 lg:px-24">
+            <h2 class="section-title reveal"><span class="font-mono text-primary mr-2">03.</span> Things I’ve Built</h2>
+            <div class="space-y-20">
+                <!-- Project -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center reveal">
+                    <div class="lg:order-2">
+                        <p class="font-mono text-primary text-sm text-right">SmartCrave</p>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4 text-right">AI-Driven Wellness Food Advisor
+                        </h3>
+                        <div class="project-card p-6 rounded-md mb-4 shadow-lg">
+                            <p class="text-gray-600">Full-stack MERN app for healthy food alternatives. Integrated
+                                Gemini and OpenAI APIs for nutrition analysis, personalized workouts, hydration tips,
+                                and health recommendations based on cravings, goals, and conditions. </p>
+                        </div>
+                        <ul class="flex flex-wrap gap-x-4 gap-y-2 justify-end font-mono text-sm text-gray-500 mb-4">
+                            <li>MERN Stack</li>
+                            <li>OpenAI API</li>
+                            <li>Gemini API</li>
+                            <li>Reactjs</li>
+                        </ul>
+                        <div class="flex justify-end"><a href="https://github.com/vivekmahey" target="_blank"
+                                class="text-primary hover:underline">View on GitHub &rarr;</a></div>
+                    </div>
+                    <div class="p-4 project-card rounded-md lg:order-1">
+                        <img src="./images/Screenshot (479).png" class="rounded-md w-full"
+                            alt="AI Learning Platform Project">
+                    </div>
+                </div>
+                <!-- Project -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center reveal">
+                    <div>
+                        <p class="font-mono text-primary text-sm">Featured Project</p>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">EcoChain: AI Waste Management</h3>
+                        <div class="project-card p-6 rounded-md mb-4 shadow-lg">
+                            <p class="text-gray-600">A full-stack MERN web app promoting recycling through rewards and
+                                an eco-marketplace. Integrated Gemini API for chat assistance, idea optimization, and
+                                sustainability quizzes.</p>
+                        </div>
+                        <ul class="flex flex-wrap gap-x-4 gap-y-2 font-mono text-sm text-gray-500 mb-4">
+                            <li>MERN Stack</li>
+                            <li>Gemini API</li>
+                            <li>Tailwind CSS</li>
+                            <li>Redux</li>
+                        </ul>
+                        <a href="https://github.com/vivekmahey" target="_blank"
+                            class="text-primary hover:underline">View on GitHub &rarr;</a>
+                    </div>
+                    <div class="p-4 project-card rounded-md">
+                        <img src="./images/image1.png" class="rounded-md w-full" alt="EcoChain Project">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Freelance Section -->
+        <section id="freelance" class="py-24 md:py-32 container mx-auto px-6 md:px-12 lg:px-24">
+            <h2 class="section-title reveal"><span class="font-mono text-primary mr-2">04.</span> Client & Freelance
+                Work</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Freelance Project 1 -->
+                <a href="https://lensfillers.ca/" target="_blank" rel="noopener noreferrer"
+                    class="freelance-card rounded-lg p-6 flex flex-col group reveal">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2 group-hover:text-primary transition-colors">
+                                Lensfillers Photography</h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="text-gray-500 group-hover:text-primary transition-colors">
+                                <line x1="7" y1="17" x2="17" y2="7"></line>
+                                <polyline points="7 7 17 7 17 17"></polyline>
+                            </svg>
+                        </div>
+                        <p class="text-gray-500 text-sm">Developed a responsive portfolio website for showcasing wedding
+                            albums and photography services, built using the MERN stack for a dynamic and scalable user
+                            experience.</p>
+                    </div>
+                    <ul class="flex flex-wrap gap-2 mt-4 font-mono text-xs text-gray-500">
+                        <li class="bg-white px-2 py-1 rounded border border-gray-200">React</li>
+                        <li class="bg-white px-2 py-1 rounded border border-gray-200">Node.js</li>
+                        <li class="bg-white px-2 py-1 rounded border border-gray-200">MongoDB</li>
+                    </ul>
+                    <div class="mt-4">
+                        <img src="./images/Screenshot (480).png" alt="Lensfillers Photography" class="freelance-image">
+                    </div>
+                </a>
+                <!-- Freelance Project 2 -->
+                <a href="https://indy-repairs.vercel.app/" target="_blank" rel="noopener noreferrer"
+                    class="freelance-card rounded-lg p-6 flex flex-col group reveal" style="transition-delay: 0.1s;">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2 group-hover:text-primary transition-colors">
+                                Indy Repairs</h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="text-gray-500 group-hover:text-primary transition-colors">
+                                <line x1="7" y1="17" x2="17" y2="7"></line>
+                                <polyline points="7 7 17 7 17 17"></polyline>
+                            </svg>
+                        </div>
+                        <p class="text-gray-500 text-sm">A modern, responsive landing page for a local repair service
+                            business. Focused on clear communication, service highlighting, and lead generation through
+                            a simple contact interface.</p>
+                    </div>
+                    <ul class="flex flex-wrap gap-2 mt-4 font-mono text-xs text-gray-500">
+                        <li class="bg-white px-2 py-1 rounded border border-gray-200">Next.js</li>
+                        <li class="bg-white px-2 py-1 rounded border border-gray-200">Tailwind CSS</li>
+                        <li class="bg-white px-2 py-1 rounded border border-gray-200">Vercel</li>
+                    </ul>
+                    <div class="mt-4">
+                        <img src="./images/image.png" alt="Indy Repairs" class="freelance-image">
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-24 md:py-32 container mx-auto px-6 md:px-12 lg:px-24 text-center">
+            <h3 class="text-5xl font-black text-gray-800 mb-4 reveal" style="transition-delay: 0.1s;">Get In Touch</h3>
+            <p class="max-w-xl mx-auto text-gray-500 mb-8 reveal" style="transition-delay: 0.2s;">
+                I'm currently seeking new opportunities for Fall 2025 and am open to freelance projects. My inbox is
+                always open. Whether you have a question or just want to collaborate, I'll get back to you!
+            </p>
+            <form name="contact" method="POST" data-netlify="true" class="max-w-xl mx-auto space-y-4 text-left reveal"
+                style="transition-delay: 0.3s;">
+                <input type="hidden" name="form-name" value="contact" />
+                <div>
+                    <label for="name" class="sr-only">Name</label>
+                    <input type="text" name="name" id="name" placeholder="Your Name" required class="form-input">
+                </div>
+                <div>
+                    <label for="email" class="sr-only">Email</label>
+                    <input type="email" name="email" id="email" placeholder="Your Email" required class="form-input">
+                </div>
+                <div>
+                    <label for="message" class="sr-only">Message</label>
+                    <textarea name="message" id="message" rows="4" placeholder="Your Message" required
+                        class="form-input"></textarea>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn-primary font-mono text-lg py-3 px-10 rounded-md inline-block">
+                        Send Message
+                    </button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <footer class="footer text-center py-12">
+        <div class="container mx-auto px-6">
+            <p class="font-mono text-sm text-gray-600 mb-4">
+                Designed & Built by <a href="https://github.com/vivekmahey" target="_blank" class="font-bold">Vivek
+                    Mahey</a>
+            </p>
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="https://github.com/vivekmahey" target="_blank" rel="noopener noreferrer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                        </path>
+                    </svg>
+                </a>
+                <a href="https://www.linkedin.com/in/vivek-mahey-236448255" target="_blank" rel="noopener noreferrer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                        <rect x="2" y="9" width="4" height="12"></rect>
+                        <circle cx="4" cy="4" r="2"></circle>
+                    </svg>
+                </a>
+            </div>
+            <p class="font-mono text-xs text-gray-500">
+                &copy; 2025 Vivek Mahey. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Theme Toggle ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const html = document.documentElement;
+
+            // Check for saved theme preference or default to light
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            html.setAttribute('data-theme', savedTheme);
+            if (savedTheme === 'dark') {
+                themeToggle.classList.add('active');
+            }
+
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                themeToggle.classList.toggle('active');
+            });
+
+            // --- Custom Cursor ---
+            const cursorDot = document.querySelector(".cursor-dot");
+            const cursorOutline = document.querySelector(".cursor-outline");
+            window.addEventListener("mousemove", function (e) {
+                const posX = e.clientX; const posY = e.clientY;
+                cursorDot.style.left = `${posX}px`;
+                cursorDot.style.top = `${posY}px`;
+                cursorOutline.style.left = `${posX}px`;
+                cursorOutline.style.top = `${posY}px`;
+            });
+
+            const interactiveElements = document.querySelectorAll('a, button, .glass-card, .project-card, .freelance-card, input, textarea, .hamburger, .theme-toggle, iframe');
+            interactiveElements.forEach(el => {
+                el.addEventListener('mouseover', () => cursorOutline.classList.add('cursor-interact'));
+                el.addEventListener('mouseleave', () => cursorOutline.classList.remove('cursor-interact'));
+            });
+
+            // --- Header Scroll Effect ---
+            const header = document.querySelector('.header-full');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 10) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // --- Hamburger Menu Toggle ---
+            const hamburger = document.querySelector('.hamburger');
+            const mobileNav = document.querySelector('.mobile-nav');
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                mobileNav.classList.toggle('active');
+                document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
+            });
+
+            // Close mobile nav when a link is clicked
+            mobileNav.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    mobileNav.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+
+            // --- Navigation Active State ---
+            const sections = document.querySelectorAll('section');
+            const navDots = document.querySelectorAll('.nav-dot');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.4 };
+
+            const sectionObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navDots.forEach(dot => {
+                            dot.classList.remove('active');
+                            if (dot.dataset.section === entry.target.id) {
+                                dot.classList.add('active');
+                            }
+                        });
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.dataset.section === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(sec => sectionObserver.observe(sec));
+
+            // --- Section Reveal on Scroll ---
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            revealElements.forEach(el => revealObserver.observe(el));
+        });
+    </script>
+</body>
+
+</html>
